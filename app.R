@@ -133,7 +133,7 @@ ui <- dashboardPage(
                         infoBoxOutput('value', width = 3)
                 ),
                 fluidRow(
-                    box(plotlyOutput("plot", height = 500), 
+                    box(plotlyOutput("plot", height = 600), 
                         title = textOutput('title'), status = 'primary',
                         solidHeader = TRUE, width = 9),
                     box(title = 'Plot Type', status = 'primary', solidHeader = TRUE,
