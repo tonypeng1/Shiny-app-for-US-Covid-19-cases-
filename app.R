@@ -18,6 +18,7 @@ Z <- X %>%
     filter((County.Name == 'Harris County' & State == 'TX') | 
                (County.Name == 'Dallas County' & State == 'TX') | 
                (County.Name == 'Travis County' & State == 'TX') |
+               (County.Name == 'Tarrant County' & State == 'TX') |
                (County.Name == 'Hillsborough County' & State == 'FL') | 
                (County.Name == 'Pinellas County' & State == 'FL') |
                (County.Name == 'Orange County' & State == 'FL') | 
@@ -32,6 +33,7 @@ Z <- X %>%
                (County.Name == "Montgomery County" & State == 'MD') |
                (County.Name == "Fairfax County" & State == 'VA') |
                (County.Name == "Fulton County" & State == 'GA') |
+               (County.Name == "DeKalb County" & State == 'GA') |
                (County.Name == "Suffolk County" & State == 'MA') |
                (County.Name == "Cook County" & State == 'IL') |
                (County.Name == "New York County" & State == 'NY') |
@@ -43,6 +45,7 @@ Z <- X %>%
                (County.Name == "Davidson County" & State == 'TN') |
                (County.Name == "Philadelphia County" & State == 'PA') |
                (County.Name == "Hennepin County" & State == 'MN') |
+               (County.Name == "Ada County" & State == 'ID') |
                (County.Name == 'King County' & State == 'WA')
     ) %>% 
     select(countyFIPS:State, date_range[1]:date_range[len + 1])
@@ -51,6 +54,7 @@ city_table <- list(
     'Harris County' = 'Houstin Region',
     'Dallas County' = 'Dallas Region',
     'Travis County' = 'Austin Region',
+    'Tarrant County' = 'Fort Worth Region',
     'Hillsborough County' = 'Tampa Region',
     'Orange County' = 'Orlando Region',
     'Pinellas County' = 'Clearwater/St. Petersburg Region',
@@ -64,7 +68,8 @@ city_table <- list(
     "Prince George's County" = 'Washington Metro - East',
     "Montgomery County" = 'Washington Metro - North',
     "Fairfax County" = 'Washington Metro - West',
-    "Fulton County" = 'Atlanta Region',
+    "Fulton County" = 'Atlanta - West',
+    "DeKalb County" = 'Atlanta - East',
     "Suffolk County" = 'Boston Region',
     "Cook County" = 'Chicago Region',
     "New York County" = 'New York Region',
@@ -76,6 +81,7 @@ city_table <- list(
     "Davidson County" = 'Nashville Region',
     "Philadelphia County" = 'Philadelphia Region',
     "Hennepin County" = 'Minneapolis Region',
+    "Ida County" = 'Boise Region',
     "King County" = 'Seattle Region'
 )
 
@@ -87,14 +93,17 @@ ui <- dashboardPage(
         dashboardSidebar(
                 sidebarMenu(
                     selectInput(inputId = 'county_of_city', label = "City Region",
-                                c('Atlanta' = 'Fulton County',
+                                c('Atlanta - West' = 'Fulton County',
+                                  'Atlanta - East' = 'DeKalb County',
                                   'Austin' = 'Travis County',
+                                  'Boise' = 'Ada County',
                                   'Boston' = 'Suffolk County',
                                   'Charlotte' = 'Mecklenburg County',
                                   'Chicago' = 'Cook County',
                                   'Clearwater/St. Petersburg' = 'Pinellas County',
                                   'Dallas' = 'Dallas County',
                                   'Denver' = 'Denver County',
+                                  'Fort Worth' = 'Tarrant County',
                                   'Houston' = 'Harris County',
                                   'Indianapolis' = 'Marion County',
                                   'Las Vegas' = 'Clark County',
