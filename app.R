@@ -81,7 +81,7 @@ city_table <- list(
     "Davidson County" = 'Nashville Region',
     "Philadelphia County" = 'Philadelphia Region',
     "Hennepin County" = 'Minneapolis Region',
-    "Ida County" = 'Boise Region',
+    "Ada County" = 'Boise Region',
     "King County" = 'Seattle Region'
 )
 
