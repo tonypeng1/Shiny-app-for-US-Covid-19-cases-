@@ -7,6 +7,7 @@ library(plotly)
 library(zoo)
 
 X <- read.csv("https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_confirmed_usafacts.csv")
+Y <- read.csv("https://www2.census.gov/programs-surveys/popest/datasets/2010-2019/counties/totals/co-est2019-alldata.csv")
 
 # set length of dates
 len <- 150
@@ -35,6 +36,7 @@ Z <- X %>%
                (County.Name == "Fulton County" & State == 'GA') |
                (County.Name == "DeKalb County" & State == 'GA') |
                (County.Name == "Suffolk County" & State == 'MA') |
+               (County.Name == "Barnstable County" & State == 'MA') |
                (County.Name == "Cook County" & State == 'IL') |
                (County.Name == "New York County" & State == 'NY') |
                (County.Name == "Maui County" & State == 'HI') |
@@ -49,6 +51,44 @@ Z <- X %>%
                (County.Name == 'King County' & State == 'WA')
     ) %>% 
     select(countyFIPS:State, date_range[1]:date_range[len + 1])
+
+YY <- Y %>% 
+    filter(
+        (CTYNAME == 'Harris County' & STNAME == 'Texas') |
+            (CTYNAME == 'Dallas County' & STNAME == 'Texas') | 
+            (CTYNAME == 'Travis County' & STNAME == 'Texas') |
+            (CTYNAME == 'Tarrant County' & STNAME == 'Texas') |
+            (CTYNAME == 'Hillsborough County' & STNAME == 'Florida') | 
+            (CTYNAME == 'Pinellas County' & STNAME == 'Florida') |
+            (CTYNAME == 'Orange County' & STNAME == 'Florida') | 
+            (CTYNAME == 'Miami-Dade County' & STNAME == 'Florida') | 
+            (CTYNAME == 'Los Angeles County' & STNAME == 'California') | 
+            (CTYNAME == 'Santa Clara County' & STNAME == 'California') | 
+            (CTYNAME == 'San Francisco County' & STNAME == 'California') |
+            (CTYNAME == 'San Diego County' & STNAME == 'California') |
+            (CTYNAME == 'Mecklenburg County' & STNAME == 'North Carolina') |
+            (CTYNAME == 'District of Columbia' & STNAME == 'District of Columbia') |
+            (CTYNAME == "Prince George's County" & STNAME == 'Maryland') |
+            (CTYNAME == "Montgomery County" & STNAME == 'Maryland') |
+            (CTYNAME == "Fairfax County" & STNAME == 'Virginia') |
+            (CTYNAME == "Fulton County" & STNAME == 'Georgia') |
+            (CTYNAME == "DeKalb County" & STNAME == 'Georgia') |
+            (CTYNAME == "Suffolk County" & STNAME == 'Massachusetts') |
+            (CTYNAME == "Barnstable County" & STNAME == 'Massachusetts') |
+            (CTYNAME == "Cook County" & STNAME == 'Illinois') |
+            (CTYNAME == "New York County" & STNAME == 'New York') |
+            (CTYNAME == "Maui County" & STNAME == 'Hawaii') |
+            (CTYNAME == "Maricopa County" & STNAME == 'Arizona') |
+            (CTYNAME == "Denver County" & STNAME == 'Colorado') |
+            (CTYNAME == "Clark County" & STNAME == 'Nevada') |
+            (CTYNAME == "Marion County" & STNAME == 'Indiana') |
+            (CTYNAME == "Davidson County" & STNAME == 'Tennessee') |
+            (CTYNAME == "Philadelphia County" & STNAME == 'Pennsylvania') |
+            (CTYNAME == "Hennepin County" & STNAME == 'Minnesota') |
+            (CTYNAME == "Ada County" & STNAME == 'Idaho') |
+            (CTYNAME == 'King County' & STNAME == 'Washington')
+    ) %>% 
+    select(STNAME, CTYNAME, POPESTIMATE2019)
 
 city_table <- list(
     'Harris County' = 'Houstin Region',
@@ -71,6 +111,7 @@ city_table <- list(
     "Fulton County" = 'Atlanta - West',
     "DeKalb County" = 'Atlanta - East',
     "Suffolk County" = 'Boston Region',
+    "Barnstable County" = 'Provincetown Region',
     "Cook County" = 'Chicago Region',
     "New York County" = 'New York Region',
     "Maui County" = 'Maui Island Region',
@@ -116,6 +157,7 @@ ui <- dashboardPage(
                                   'Orlando' = 'Orange County',
                                   'Philadelphia' = 'Philadelphia County',
                                   'Phoenix' = 'Maricopa County',
+                                  'Provincetown' = 'Barnstable County',
                                   'San Diego' = 'San Diego County',
                                   'San Francisco' = 'San Francisco County',
                                   'San Jose' = 'Santa Clara County',
@@ -127,8 +169,11 @@ ui <- dashboardPage(
                                   'Washington Metro - West' = "Fairfax County"
                                   ),
                                 selected = 'Travis County'),
-                    menuItem('Data Source', icon = icon('database'),
+                    menuItem('Covid Data Source', icon = icon('database'),
                              href = 'https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/',
+                             newtab = FALSE),
+                    menuItem('Population Data Source', icon = icon('database'),
+                             href = 'https://www.census.gov/data/datasets/time-series/demo/popest/2010s-counties-total.html',
                              newtab = FALSE),
                     menuItem('Source code', icon = icon('file-code-o'),
                              href = 'https://github.com/tonypeng1/Shiny-app-for-US-Covid-19-cases-/', newtab = FALSE)
@@ -146,12 +191,16 @@ ui <- dashboardPage(
                         title = textOutput('title'), status = 'primary',
                         solidHeader = TRUE, width = 9),
                     box(title = 'Plot Type', status = 'primary', solidHeader = TRUE,
-                        selectInput(inputId = 'type', label = 'Total or New Cases:',
+                        selectInput(inputId = 'type', 
+                                    label = '',
                                     c('New Cases' = 'New Cases', 
-                                      "Total Cases" = 'Total Cases'),
+                                      "Total Cases" = 'Total Cases',
+                                      "New Cases per 100,000 Residents" = 'New Cases Per 100,000 Residents',
+                                      "Total cases per 100,000 residents" = 'Total Cases Per 100,000 Residents'
+                                      ),
                                       selected = 'New Case'), width = 3
                         )
-                    )
+                )
             )
         )
 
@@ -162,7 +211,8 @@ server <- function(input, output) {
             
             # Run this code block if new cases. Change total cases to new cases & remove 
             # the last column
-            if (input$type == 'New Cases') {
+            if (input$type == 'New Cases' | 
+                input$type == 'New Cases Per 100,000 Residents') {
                 for (i in 2:(len + 1)) {
                     ZZ <- ZZ %>% mutate(!!date_range[i - 1] := 
                                             !!as.name(date_range[i]) - 
@@ -183,6 +233,16 @@ server <- function(input, output) {
             ZZZ_long$date <- ZZZ_long$date %>%
                 substring(2) %>% 
                 mdy()
+            
+            # change value if per 100,000 residents
+            if (input$type == 'New Cases Per 100,000 Residents' | 
+                input$type == 'Total Cases Per 100,000 Residents') {
+                YYY <- YY %>% 
+                    filter(CTYNAME == input$county_of_city) %>% 
+                    select(POPESTIMATE2019)
+                
+                ZZZ_long$value <- round(ZZZ_long$value / YYY$POPESTIMATE2019 * 100000, 0)
+            }
             
             output$value <- renderInfoBox({
                 infoBox('Cases', ZZZ_long$value[len], 
