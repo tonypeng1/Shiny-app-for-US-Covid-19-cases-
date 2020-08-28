@@ -237,9 +237,16 @@ server <- function(input, output) {
             # change value if per 100,000 residents
             if (input$type == 'New Cases Per 100,000 Residents' | 
                 input$type == 'Total Cases Per 100,000 Residents') {
+                if (input$county_of_city == 'Washington') {
+                    YYY <- YY %>% 
+                        filter(CTYNAME == 'District of Columbia') %>% 
+                        select(POPESTIMATE2019)
+                }
+                else {
                 YYY <- YY %>% 
                     filter(CTYNAME == input$county_of_city) %>% 
                     select(POPESTIMATE2019)
+                }
                 
                 ZZZ_long$value <- round(ZZZ_long$value / YYY$POPESTIMATE2019 * 100000, 0)
             }
