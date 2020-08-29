@@ -39,6 +39,10 @@ Z <- X %>%
                (County.Name == "Barnstable County" & State == 'MA') |
                (County.Name == "Cook County" & State == 'IL') |
                (County.Name == "New York County" & State == 'NY') |
+               (County.Name == "Bronx County" & State == 'NY') |
+               (County.Name == "Kings County" & State == 'NY') |
+               (County.Name == "Queens County" & State == 'NY') |
+               (County.Name == "Richmond County" & State == 'NY') |
                (County.Name == "Maui County" & State == 'HI') |
                (County.Name == "Maricopa County" & State == 'AZ') |
                (County.Name == "Denver County" & State == 'CO') |
@@ -48,6 +52,7 @@ Z <- X %>%
                (County.Name == "Philadelphia County" & State == 'PA') |
                (County.Name == "Hennepin County" & State == 'MN') |
                (County.Name == "Ada County" & State == 'ID') |
+               (County.Name == "Greene County" & State == 'MO') |
                (County.Name == 'King County' & State == 'WA')
     ) %>% 
     select(countyFIPS:State, date_range[1]:date_range[len + 1])
@@ -77,6 +82,10 @@ YY <- Y %>%
             (CTYNAME == "Barnstable County" & STNAME == 'Massachusetts') |
             (CTYNAME == "Cook County" & STNAME == 'Illinois') |
             (CTYNAME == "New York County" & STNAME == 'New York') |
+            (CTYNAME == "Bronx County" & STNAME == 'New York') |
+            (CTYNAME == "Kings County" & STNAME == 'New York') |
+            (CTYNAME == "Queens County" & STNAME == 'New York') |
+            (CTYNAME == "Richmond County" & STNAME == 'New York') |
             (CTYNAME == "Maui County" & STNAME == 'Hawaii') |
             (CTYNAME == "Maricopa County" & STNAME == 'Arizona') |
             (CTYNAME == "Denver County" & STNAME == 'Colorado') |
@@ -86,6 +95,7 @@ YY <- Y %>%
             (CTYNAME == "Philadelphia County" & STNAME == 'Pennsylvania') |
             (CTYNAME == "Hennepin County" & STNAME == 'Minnesota') |
             (CTYNAME == "Ada County" & STNAME == 'Idaho') |
+            (CTYNAME == "Greene County" & STNAME == 'Missouri') |
             (CTYNAME == 'King County' & STNAME == 'Washington')
     ) %>% 
     select(STNAME, CTYNAME, POPESTIMATE2019)
@@ -113,7 +123,11 @@ city_table <- list(
     "Suffolk County" = 'Boston Region',
     "Barnstable County" = 'Provincetown Region',
     "Cook County" = 'Chicago Region',
-    "New York County" = 'New York Region',
+    "New York County" = 'New York - Manhattan',
+    "Bronx County" = 'New York - The Bronx',
+    "Kings County" = 'New York - Brooklyn',
+    "Queens County" = 'New York - Queens',
+    "Richmond County" = 'New York - Staten Island',
     "Maui County" = 'Maui Island Region',
     "Maricopa County" = 'phoenix Region',
     "Denver County" = 'Denver Region',
@@ -123,6 +137,7 @@ city_table <- list(
     "Philadelphia County" = 'Philadelphia Region',
     "Hennepin County" = 'Minneapolis Region',
     "Ada County" = 'Boise Region',
+    "Greene County" = 'Springfield Region',
     "King County" = 'Seattle Region'
 )
 
@@ -153,7 +168,11 @@ ui <- dashboardPage(
                                   'Miami' = 'Miami-Dade County',
                                   'Minneapolis' = 'Hennepin County',
                                   'Nashville' = 'Davidson County',
-                                  'New York' = 'New York County',
+                                  'New York - Brooklyn' = 'Kings County',
+                                  'New York - Manhattan' = 'New York County',
+                                  'New York - Queens' = 'Queens County',
+                                  'New York - Staten Island' = 'Richmond County',
+                                  'New York - The Bronx' = 'Bronx County',
                                   'Orlando' = 'Orange County',
                                   'Philadelphia' = 'Philadelphia County',
                                   'Phoenix' = 'Maricopa County',
@@ -162,6 +181,7 @@ ui <- dashboardPage(
                                   'San Francisco' = 'San Francisco County',
                                   'San Jose' = 'Santa Clara County',
                                   'Seattle' = 'King County',
+                                  'Springfield' = 'Greene County',
                                   'Tampa' = 'Hillsborough County',
                                   'Washington DC' = 'Washington',
                                   'Washington Metro - East' = "Prince George's County",
