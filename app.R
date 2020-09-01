@@ -20,6 +20,7 @@ Z <- X %>%
                (County.Name == 'Dallas County' & State == 'TX') | 
                (County.Name == 'Travis County' & State == 'TX') |
                (County.Name == 'Tarrant County' & State == 'TX') |
+               (County.Name == 'Bexar County' & State == 'TX') |
                (County.Name == 'Hillsborough County' & State == 'FL') | 
                (County.Name == 'Pinellas County' & State == 'FL') |
                (County.Name == 'Orange County' & State == 'FL') | 
@@ -63,6 +64,7 @@ YY <- Y %>%
             (CTYNAME == 'Dallas County' & STNAME == 'Texas') | 
             (CTYNAME == 'Travis County' & STNAME == 'Texas') |
             (CTYNAME == 'Tarrant County' & STNAME == 'Texas') |
+            (CTYNAME == 'Bexar County' & STNAME == 'Texas') |
             (CTYNAME == 'Hillsborough County' & STNAME == 'Florida') | 
             (CTYNAME == 'Pinellas County' & STNAME == 'Florida') |
             (CTYNAME == 'Orange County' & STNAME == 'Florida') | 
@@ -105,6 +107,7 @@ city_table <- list(
     'Dallas County' = 'Dallas Region',
     'Travis County' = 'Austin Region',
     'Tarrant County' = 'Fort Worth Region',
+    'Bexar County' = 'San Antonio Region',
     'Hillsborough County' = 'Tampa Region',
     'Orange County' = 'Orlando Region',
     'Pinellas County' = 'Clearwater/St. Petersburg Region',
@@ -177,6 +180,7 @@ ui <- dashboardPage(
                                   'Philadelphia' = 'Philadelphia County',
                                   'Phoenix' = 'Maricopa County',
                                   'Provincetown' = 'Barnstable County',
+                                  'San Antonio' = 'Bexar County',
                                   'San Diego' = 'San Diego County',
                                   'San Francisco' = 'San Francisco County',
                                   'San Jose' = 'Santa Clara County',
@@ -205,6 +209,11 @@ ui <- dashboardPage(
                         infoBoxOutput('county', width = 3),
                         infoBoxOutput('date', width = 3),
                         infoBoxOutput('value', width = 3)
+                        # infoBoxOutput('city', width = 2),
+                        # infoBoxOutput('county', width = 2),
+                        # infoBoxOutput('pop', width = 2),
+                        # infoBoxOutput('date', width = 2),
+                        # infoBoxOutput('value', width = 2)
                 ),
                 fluidRow(
                     box(plotlyOutput("plot", height = 600), 
@@ -270,6 +279,11 @@ server <- function(input, output) {
                 
                 ZZZ_long$value <- round(ZZZ_long$value / YYY$POPESTIMATE2019 * 100000, 0)
             }
+            
+            # output$pop <- renderInfoBox({
+            #     infoBox('Population', YYY$POPESTIMATE2019, 
+            #             icon = icon('user'), color = 'orange')
+            # })
             
             output$value <- renderInfoBox({
                 infoBox('Cases', ZZZ_long$value[len], 
