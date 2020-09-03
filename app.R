@@ -54,6 +54,8 @@ Z <- X %>%
                (County.Name == "Hennepin County" & State == 'MN') |
                (County.Name == "Ada County" & State == 'ID') |
                (County.Name == "Greene County" & State == 'MO') |
+               (County.Name == "Minnehaha County" & State == 'SD') |
+               (County.Name == "Des Moines County" & State == 'IA') |
                (County.Name == 'King County' & State == 'WA')
     ) %>% 
     select(countyFIPS:State, date_range[1]:date_range[len + 1])
@@ -98,6 +100,8 @@ YY <- Y %>%
             (CTYNAME == "Hennepin County" & STNAME == 'Minnesota') |
             (CTYNAME == "Ada County" & STNAME == 'Idaho') |
             (CTYNAME == "Greene County" & STNAME == 'Missouri') |
+            (CTYNAME == "Minnehaha County" & STNAME == 'South Dakota') |
+            (CTYNAME == "Des Moines County" & STNAME == 'Iowa') |
             (CTYNAME == 'King County' & STNAME == 'Washington')
     ) %>% 
     select(STNAME, CTYNAME, POPESTIMATE2019)
@@ -141,6 +145,8 @@ city_table <- list(
     "Hennepin County" = 'Minneapolis Region',
     "Ada County" = 'Boise Region',
     "Greene County" = 'Springfield Region',
+    "Minnehaha County" = 'Sioux Falls Region',
+    "Des Moines County" = 'Des Moines Region',
     "King County" = 'Seattle Region'
 )
 
@@ -162,6 +168,7 @@ ui <- dashboardPage(
                                   'Clearwater/St. Petersburg' = 'Pinellas County',
                                   'Dallas' = 'Dallas County',
                                   'Denver' = 'Denver County',
+                                  'Des Moines' = 'Des Moines County',
                                   'Fort Worth' = 'Tarrant County',
                                   'Houston' = 'Harris County',
                                   'Indianapolis' = 'Marion County',
@@ -185,6 +192,7 @@ ui <- dashboardPage(
                                   'San Francisco' = 'San Francisco County',
                                   'San Jose' = 'Santa Clara County',
                                   'Seattle' = 'King County',
+                                  'Sioux Falls' = 'Minnehaha County',
                                   'Springfield' = 'Greene County',
                                   'Tampa' = 'Hillsborough County',
                                   'Washington DC' = 'Washington',
@@ -209,11 +217,6 @@ ui <- dashboardPage(
                         infoBoxOutput('county', width = 3),
                         infoBoxOutput('date', width = 3),
                         infoBoxOutput('value', width = 3)
-                        # infoBoxOutput('city', width = 2),
-                        # infoBoxOutput('county', width = 2),
-                        # infoBoxOutput('pop', width = 2),
-                        # infoBoxOutput('date', width = 2),
-                        # infoBoxOutput('value', width = 2)
                 ),
                 fluidRow(
                     box(plotlyOutput("plot", height = 600), 
