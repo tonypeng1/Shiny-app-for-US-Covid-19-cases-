@@ -34,6 +34,7 @@ Z <- X %>%
                (County.Name == "Prince George's County" & State == 'MD') |
                (County.Name == "Montgomery County" & State == 'MD') |
                (County.Name == "Fairfax County" & State == 'VA') |
+               (County.Name == "Roanoke city" & State == 'VA') |
                (County.Name == "Fulton County" & State == 'GA') |
                (County.Name == "DeKalb County" & State == 'GA') |
                (County.Name == "Suffolk County" & State == 'MA') |
@@ -80,6 +81,7 @@ YY <- Y %>%
             (CTYNAME == "Prince George's County" & STNAME == 'Maryland') |
             (CTYNAME == "Montgomery County" & STNAME == 'Maryland') |
             (CTYNAME == "Fairfax County" & STNAME == 'Virginia') |
+            (CTYNAME == "Roanoke city" & STNAME == 'Virginia') |
             (CTYNAME == "Fulton County" & STNAME == 'Georgia') |
             (CTYNAME == "DeKalb County" & STNAME == 'Georgia') |
             (CTYNAME == "Suffolk County" & STNAME == 'Massachusetts') |
@@ -125,6 +127,7 @@ city_table <- list(
     "Prince George's County" = 'Washington Metro - East',
     "Montgomery County" = 'Washington Metro - North',
     "Fairfax County" = 'Washington Metro - West',
+    "Roanoke city" = 'Roanoke city Region',
     "Fulton County" = 'Atlanta - West',
     "DeKalb County" = 'Atlanta - East',
     "Suffolk County" = 'Boston Region',
@@ -187,6 +190,7 @@ ui <- dashboardPage(
                                   'Philadelphia' = 'Philadelphia County',
                                   'Phoenix' = 'Maricopa County',
                                   'Provincetown' = 'Barnstable County',
+                                  'Roanoke' = 'Roanoke city',
                                   'San Antonio' = 'Bexar County',
                                   'San Diego' = 'San Diego County',
                                   'San Francisco' = 'San Francisco County',
