@@ -51,12 +51,17 @@ Z <- X %>%
                (County.Name == "Clark County" & State == 'NV') |
                (County.Name == "Marion County" & State == 'IN') |
                (County.Name == "Davidson County" & State == 'TN') |
+               (County.Name == "Knox County" & State == 'TN') |
                (County.Name == "Philadelphia County" & State == 'PA') |
                (County.Name == "Hennepin County" & State == 'MN') |
                (County.Name == "Ada County" & State == 'ID') |
                (County.Name == "Greene County" & State == 'MO') |
                (County.Name == "Minnehaha County" & State == 'SD') |
+               (County.Name == "Cass County" & State == 'ND') |
                (County.Name == "Des Moines County" & State == 'IA') |
+               (County.Name == "Brown County" & State == 'WI') |
+               (County.Name == "Dane County" & State == 'WI') |
+               (County.Name == "Salt Lake County" & State == 'UT') |
                (County.Name == 'King County' & State == 'WA')
     ) %>% 
     select(countyFIPS:State, date_range[1]:date_range[len + 1])
@@ -98,12 +103,17 @@ YY <- Y %>%
             (CTYNAME == "Clark County" & STNAME == 'Nevada') |
             (CTYNAME == "Marion County" & STNAME == 'Indiana') |
             (CTYNAME == "Davidson County" & STNAME == 'Tennessee') |
+            (CTYNAME == "Knox County" & STNAME == 'Tennessee') |
             (CTYNAME == "Philadelphia County" & STNAME == 'Pennsylvania') |
             (CTYNAME == "Hennepin County" & STNAME == 'Minnesota') |
             (CTYNAME == "Ada County" & STNAME == 'Idaho') |
             (CTYNAME == "Greene County" & STNAME == 'Missouri') |
             (CTYNAME == "Minnehaha County" & STNAME == 'South Dakota') |
+            (CTYNAME == "Cass County" & STNAME == 'North Dakota') |
             (CTYNAME == "Des Moines County" & STNAME == 'Iowa') |
+            (CTYNAME == "Brown County" & STNAME == 'Wisconsin') |
+            (CTYNAME == "Dane County" & STNAME == 'Wisconsin') |
+            (CTYNAME == "Salt Lake County" & STNAME == 'Utah') |
             (CTYNAME == 'King County' & STNAME == 'Washington')
     ) %>% 
     select(STNAME, CTYNAME, POPESTIMATE2019)
@@ -144,12 +154,17 @@ city_table <- list(
     "Clark County" = 'Las Vegas Region',
     "Marion County" = 'Indianapolis Region',
     "Davidson County" = 'Nashville Region',
+    "Knox County" = 'Knoxville Region',
     "Philadelphia County" = 'Philadelphia Region',
     "Hennepin County" = 'Minneapolis Region',
     "Ada County" = 'Boise Region',
     "Greene County" = 'Springfield Region',
     "Minnehaha County" = 'Sioux Falls Region',
+    "Cass County" = 'Fargo Region',
     "Des Moines County" = 'Des Moines Region',
+    "Brown County" = 'Green Bay Region',
+    "Dane County" = 'Madison Region',
+    "Salt Lake County" = 'Salt Lake City Region',
     "King County" = 'Seattle Region'
 )
 
@@ -172,11 +187,15 @@ ui <- dashboardPage(
                                   'Dallas' = 'Dallas County',
                                   'Denver' = 'Denver County',
                                   'Des Moines' = 'Des Moines County',
+                                  'Fargo' = 'Cass County',
                                   'Fort Worth' = 'Tarrant County',
+                                  'Green Bay' = 'Brown County',
                                   'Houston' = 'Harris County',
                                   'Indianapolis' = 'Marion County',
+                                  'Knoxville' = 'Knox County',
                                   'Las Vegas' = 'Clark County',
                                   'Los Angeles' = 'Los Angeles County',
+                                  'Madison' = 'Dane County',
                                   'Maui Island' = 'Maui County',
                                   'Miami' = 'Miami-Dade County',
                                   'Minneapolis' = 'Hennepin County',
@@ -191,6 +210,7 @@ ui <- dashboardPage(
                                   'Phoenix' = 'Maricopa County',
                                   'Provincetown' = 'Barnstable County',
                                   'Roanoke' = 'Roanoke city',
+                                  'Salt Lake City' = 'Salt Lake County',
                                   'San Antonio' = 'Bexar County',
                                   'San Diego' = 'San Diego County',
                                   'San Francisco' = 'San Francisco County',
