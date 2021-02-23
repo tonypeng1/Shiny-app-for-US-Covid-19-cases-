@@ -5,6 +5,7 @@ library(tidyverse)
 library(lubridate)
 library(plotly)
 library(zoo)
+library(stringr)
 
 X <- read.csv("https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_confirmed_usafacts.csv")
 Y <- read.csv("https://www2.census.gov/programs-surveys/popest/datasets/2010-2019/counties/totals/co-est2019-alldata.csv")
@@ -13,6 +14,11 @@ Y <- read.csv("https://www2.census.gov/programs-surveys/popest/datasets/2010-201
 len <- 150
 cols <- names(X)
 date_range <- tail(cols, len + 1)
+
+# Find on Feb 21, 2021 that there is an added space in the county name in 
+# the USA FACTS data file that needs to be removed (otherwise filter not working).
+
+X$County.Name <- str_sub(X$County.Name, end=-2)
 
 # Select interested counties and dates
 Z <- X %>% 
@@ -284,12 +290,14 @@ server <- function(input, output) {
             
             # Change table from wide to long format
             ZZZ_long <- pivot_longer(ZZZ, col = date_range[1]:date_range[len], names_to = 'date')
-            
+
             # Remove the 'X' in front of the string and change date to 'date' format
             ZZZ_long$date <- ZZZ_long$date %>%
                 substring(2) %>% 
-                mdy()
-            
+                ymd()
+                # Find on Feb 21, 2021 the USA FACTS date format is changed to 2020-01-22
+                # so need to change from mdy (1/22/20) to ymd
+                
             # change value if per 100,000 residents
             if (input$type == 'New Cases Per 100,000 Residents' | 
                 input$type == 'Total Cases Per 100,000 Residents') {
