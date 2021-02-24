@@ -20,6 +20,15 @@ date_range <- tail(cols, len + 1)
 
 X$County.Name <- str_sub(X$County.Name, end=-2)
 
+# Find on Feb 23, 2021 that 'Denver County" is renamed to "City and County of Denver" [267],
+# "Roanoke city" is renamed to "City of Roanoke" [2993], and "San Francisco County" to 
+# "City and County of San Francisco" [229], all without a space at the end."Washington" is
+# also changed to "District of Columbia" but with a space at the end.
+
+X$County.Name[267] <- paste0(X$County.Name[267], "r")
+X$County.Name[2993] <- paste0(X$County.Name[2993], "e")
+X$County.Name[229] <- paste0(X$County.Name[229], "o")
+
 # Select interested counties and dates
 Z <- X %>% 
     filter((County.Name == 'Harris County' & State == 'TX') | 
@@ -33,14 +42,14 @@ Z <- X %>%
                (County.Name == 'Miami-Dade County' & State == 'FL') | 
                (County.Name == 'Los Angeles County' & State == 'CA') | 
                (County.Name == 'Santa Clara County' & State == 'CA') | 
-               (County.Name == 'San Francisco County' & State == 'CA') |
+               (County.Name == 'City and County of San Francisco' & State == 'CA') |
                (County.Name == 'San Diego County' & State == 'CA') |
                (County.Name == 'Mecklenburg County' & State == 'NC') |
-               (County.Name == 'Washington' & State == 'DC') |
+               (County.Name == 'District of Columbia' & State == 'DC') |
                (County.Name == "Prince George's County" & State == 'MD') |
                (County.Name == "Montgomery County" & State == 'MD') |
                (County.Name == "Fairfax County" & State == 'VA') |
-               (County.Name == "Roanoke city" & State == 'VA') |
+               (County.Name == "City of Roanoke" & State == 'VA') |
                (County.Name == "Fulton County" & State == 'GA') |
                (County.Name == "DeKalb County" & State == 'GA') |
                (County.Name == "Suffolk County" & State == 'MA') |
@@ -53,7 +62,7 @@ Z <- X %>%
                (County.Name == "Richmond County" & State == 'NY') |
                (County.Name == "Maui County" & State == 'HI') |
                (County.Name == "Maricopa County" & State == 'AZ') |
-               (County.Name == "Denver County" & State == 'CO') |
+               (County.Name == "City and County of Denver" & State == 'CO') |
                (County.Name == "Clark County" & State == 'NV') |
                (County.Name == "Marion County" & State == 'IN') |
                (County.Name == "Davidson County" & State == 'TN') |
@@ -136,14 +145,14 @@ city_table <- list(
     'Miami-Dade County' = 'Miami Region',
     'Los Angeles County' = 'Los Angeles Region',
     'Santa Clara County' = 'San Jose Region',
-    'San Francisco County' = 'San Francisco Region',
+    'City and County of San Francisco' = 'San Francisco Region',
     'San Diego County' = 'San Diego Region',
     'Mecklenburg County' = 'Charlotte Region',
-    'Washington' = 'Washington DC',
+    'District of Columbia' = 'Washington DC',
     "Prince George's County" = 'Washington Metro - East',
     "Montgomery County" = 'Washington Metro - North',
     "Fairfax County" = 'Washington Metro - West',
-    "Roanoke city" = 'Roanoke city Region',
+    "City of Roanoke" = 'Roanoke city Region',
     "Fulton County" = 'Atlanta - West',
     "DeKalb County" = 'Atlanta - East',
     "Suffolk County" = 'Boston Region',
@@ -156,7 +165,7 @@ city_table <- list(
     "Richmond County" = 'New York - Staten Island',
     "Maui County" = 'Maui Island Region',
     "Maricopa County" = 'phoenix Region',
-    "Denver County" = 'Denver Region',
+    "City and County of Denver" = 'Denver Region',
     "Clark County" = 'Las Vegas Region',
     "Marion County" = 'Indianapolis Region',
     "Davidson County" = 'Nashville Region',
@@ -191,7 +200,7 @@ ui <- dashboardPage(
                                   'Chicago' = 'Cook County',
                                   'Clearwater/St. Petersburg' = 'Pinellas County',
                                   'Dallas' = 'Dallas County',
-                                  'Denver' = 'Denver County',
+                                  'Denver' = 'City and County of Denver',
                                   'Des Moines' = 'Des Moines County',
                                   'Fargo' = 'Cass County',
                                   'Fort Worth' = 'Tarrant County',
@@ -215,17 +224,17 @@ ui <- dashboardPage(
                                   'Philadelphia' = 'Philadelphia County',
                                   'Phoenix' = 'Maricopa County',
                                   'Provincetown' = 'Barnstable County',
-                                  'Roanoke' = 'Roanoke city',
+                                  'Roanoke' = 'City of Roanoke',
                                   'Salt Lake City' = 'Salt Lake County',
                                   'San Antonio' = 'Bexar County',
                                   'San Diego' = 'San Diego County',
-                                  'San Francisco' = 'San Francisco County',
+                                  'San Francisco' = 'City and County of San Francisco',
                                   'San Jose' = 'Santa Clara County',
                                   'Seattle' = 'King County',
                                   'Sioux Falls' = 'Minnehaha County',
                                   'Springfield' = 'Greene County',
                                   'Tampa' = 'Hillsborough County',
-                                  'Washington DC' = 'Washington',
+                                  'Washington DC' = 'District of Columbia',
                                   'Washington Metro - East' = "Prince George's County",
                                   'Washington Metro - North' = "Montgomery County",
                                   'Washington Metro - West' = "Fairfax County"
@@ -301,7 +310,7 @@ server <- function(input, output) {
             # change value if per 100,000 residents
             if (input$type == 'New Cases Per 100,000 Residents' | 
                 input$type == 'Total Cases Per 100,000 Residents') {
-                if (input$county_of_city == 'Washington') {
+                if (input$county_of_city == 'District of Columbia') {
                     YYY <- YY %>% 
                         filter(CTYNAME == 'District of Columbia') %>% 
                         select(POPESTIMATE2019)
