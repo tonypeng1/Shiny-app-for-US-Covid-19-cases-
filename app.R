@@ -7,7 +7,9 @@ library(plotly)
 library(zoo)
 library(stringr)
 
-X <- read.csv("https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_confirmed_usafacts.csv")
+# Find on August 22, 2021 that the Covid data link at USAFACTS is changed. Change to the new link. 
+# X <- read.csv("https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_confirmed_usafacts.csv")
+X <- read.csv("https://static.usafacts.org/public/data/covid-19/covid_confirmed_usafacts.csv")
 Y <- read.csv("https://www2.census.gov/programs-surveys/popest/datasets/2010-2019/counties/totals/co-est2019-alldata.csv")
 
 # set length of dates
@@ -29,6 +31,7 @@ X$County.Name[267] <- paste0(X$County.Name[267], "r")
 X$County.Name[2993] <- paste0(X$County.Name[2993], "e")
 X$County.Name[229] <- paste0(X$County.Name[229], "o")
 
+# browser()
 # Select interested counties and dates
 Z <- X %>% 
     filter((County.Name == 'Harris County' & State == 'TX') | 
